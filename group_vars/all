@@ -14,7 +14,7 @@ quantum_db_pass: poufujusio
 quantum_external_interface: eth1
 
 cinder_db_pass: gamBefcel
-cinder_volume_dev: /dev/md1
+cinder_volume_dev: /dev/md127
 
 external_network_name: external_network
 external_subnet_name: external_sub_network
