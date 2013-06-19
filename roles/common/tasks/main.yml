@@ -30,7 +30,7 @@
 
 - name: Install Development tools
   yum: name='@development-tools' state=present
-  when: $vswitch_version.stdout != '1.10.0'
+  when: vswitch_version.stdout != '1.10.0'
 
 - name: Create the directories for compiling the openvswitch source
   file: path=/root/rpmbuild/SOURCES state=directory
