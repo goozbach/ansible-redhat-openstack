@@ -1,0 +1,9 @@
+---
+- name: restart quantum
+  service: name={{ item }} state=restarted 
+  with_items:
+   - quantum-server
+   - quantum-l3-agent
+   - quantum-dhcp-agent
+   - quantum-openvswitch-agent
+

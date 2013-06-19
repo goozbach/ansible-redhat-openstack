@@ -5,12 +5,25 @@
   roles:
    - common
 
+# roles taken from http://docs.openstack.org/grizzly/basic-install/yum/content/basic-install_architecture.html
 - hosts: openstack_controller
   roles:
-   - controller
+   - quantum_server
+   - nova_api
+   - nova_scheduler
+   - keystone
+   - messaging_server
+   - cinder
+   - horizon
 
 - hosts: openstack_compute
   roles:
-   - compute
+   - nova_compute
+   - quantum_plugin_agents
  
- 
+- hosts: openstack_network
+  roles:
+   - quantum_plugin_agents
+   - quantum_l3_agent
+   - quantum_dhcp_agent
+   - quantum_metadata_agent

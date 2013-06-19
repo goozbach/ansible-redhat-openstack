@@ -1,0 +1,8 @@
+---
+- name: restart horizon
+  service: name={{ item }} state=restarted
+  with_items:
+   - openstack-nova-consoleauth
+   - openstack-nova-novncproxy
+   - httpd
+   - memcached

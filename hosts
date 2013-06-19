@@ -4,3 +4,5 @@ server1.4aths.friocorte.com
 [openstack_compute]
 server1.4aths.friocorte.com
 
+[openstack_network]
+server1.4aths.friocorte.com

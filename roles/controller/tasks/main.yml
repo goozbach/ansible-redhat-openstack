@@ -1,11 +1,18 @@
 ---
-# The mail include file  for the controller node
+# Tasks for the base controller node
 
-- include: base.yml
-- include: keystone.yml
-- include: glance.yml
-- include: nova.yml
-- include: cinder.yml
-- include: horizon.yml
-- include: quantum.yml
+- name: Install the base packages
+  yum: name={{ item }} state=installed
+  with_items: 
+   - mysql
+   - mysql-server
+   - MySQL-python
+   - qpid-cpp-client
+   - qpid-cpp-server
+   - openstack-utils
 
+- name: start the services
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+   - mysqld
+   - qpidd

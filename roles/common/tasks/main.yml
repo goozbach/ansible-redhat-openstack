@@ -29,29 +29,34 @@
   register: vswitch_version
 
 - name: Install Development tools
-  shell: yum -y groupinstall "Development Tools"
-  when: vswitch_version.stdout != '1.10.0'
+  yum: name='@development-tools' state=present
+  when: $vswitch_version.stdout != '1.10.0'
 
 - name: Create the directories for compiling the openvswitch source
   file: path=/root/rpmbuild/SOURCES state=directory
 
+#TODO put into a yum repo
 - name: Get the Openvswitch stable release
   get_url: url=http://openvswitch.org/releases/openvswitch-1.10.0.tar.gz dest=/root/rpmbuild/SOURCES/
   when: vswitch_version.stdout != '1.10.0'
 
+#TODO put into a yum repo
 - name: Copy the kmod spec file
   copy: src=openvswitch-kmod.files dest=/root/rpmbuild/SOURCES/
 
+#TODO put into a yum repo
 - name: Copy the spec files for rpmbuild
   copy: src={{ item }} dest=/root
   with_items:
     - openvswitch-kmod-rhel6.spec
     - openvswitch.spec
 
+#TODO put into a yum repo
 - name: Build the Openvswitch kernel module.
   shell: chdir=/root rpmbuild -bb /root/openvswitch-kmod-rhel6.spec
          creates=/root/rpmbuild/RPMS/x86_64/kmod-openvswitch-1.10.0-1.el6.x86_64.rpm 
 
+#TODO put into a yum repo
 - name: Build the Openvswitch userspace application.
   shell: chdir=/root rpmbuild -bb /root/openvswitch.spec
          creates=/root/rpmbuild/RPMS/x86_64/openvswitch-1.10.0-1.x86_64.rpm 
@@ -70,11 +75,8 @@
 - name: start the openvswitch service.
   service: name=openvswitch state=started
 
-- name: Disable selinux dynamically
-  shell: creates=/etc/sysconfig/selinux.disabled setenforce 0 ; touch /etc/sysconfig/selinux.disabled
-
 - name: Disable SELinux in conf file
-  copy: src=selinux dest=/etc/sysconfig/selinux
+  selinux: state=disabled
 
 - name: Disable iptables
   service: name=iptables state=stopped enabled=no
